@@ -11,10 +11,11 @@ using System.Windows.Forms;
 using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Mariani_File
+namespace Crud__2
 {
     public partial class Form1 : Form
     {
+        #region Dichiarazioni variabili
         public struct Prodotto
         {
             public string nome;
@@ -24,7 +25,9 @@ namespace Mariani_File
         public string fileName = @"testo.csv";
         public Prodotto prodotto;
         public int dim;
+        #endregion
 
+        #region Pulsanti
         public Form1()
         {
             InitializeComponent();
@@ -34,17 +37,6 @@ namespace Mariani_File
         {
 
         }
-
-        private void Scrittura(Prodotto prodotto)
-        {
-            using (StreamWriter writer = new StreamWriter(fileName, append: true))
-            {
-                writer.WriteLine("Nome: " + prodotto.nome + ";" + " Prezzo: " + prodotto.prezzo + "€");
-                writer.Close();
-            }
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             prodotto.nome = textBox1.Text;
@@ -61,19 +53,6 @@ namespace Mariani_File
             AperturaFile();
         }
 
-        private void AperturaFile()
-        {
-            using (StreamReader sr = File.OpenText(fileName))
-            {
-                string s = "";
-                while ((s = sr.ReadLine()) != null)
-                {
-                    listView1.Items.Add(s);
-                }
-                sr.Close();
-            }
-        }
-
         private void button3_Click(object sender, EventArgs e)
         {
             listView1.Clear();
@@ -82,6 +61,31 @@ namespace Mariani_File
             {
                 writer.Close();
             }
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string oggetto = textBox1.Text;
+            Cancellazione(oggetto);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string parola = textBox1.Text;
+            string modificato = textBox3.Text;
+
+            Modifica(parola.ToString(), modificato.ToString());
+        }
+        #endregion
+
+        #region funzioni 
+        private void Scrittura(Prodotto prodotto)
+        {
+            using (StreamWriter writer = new StreamWriter(fileName, append: true))
+            {
+                writer.WriteLine("Nome: " + prodotto.nome + ";" + " Prezzo: " + prodotto.prezzo + "€");
+                writer.Close();
+            }
+
         }
 
         private void Cancellazione(string oggetto)
@@ -110,21 +114,18 @@ namespace Mariani_File
             listView1.Clear();
             AperturaFile();
         }
-
-        private void button4_Click(object sender, EventArgs e)
+        private void AperturaFile()
         {
-            string oggetto = textBox1.Text;
-            Cancellazione(oggetto);
+            using (StreamReader sr = File.OpenText(fileName))
+            {
+                string s = "";
+                while ((s = sr.ReadLine()) != null)
+                {
+                    listView1.Items.Add(s);
+                }
+                sr.Close();
+            }
         }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            string parola = textBox1.Text;
-            string modificato = textBox3.Text;
-
-            Modifica(parola.ToString(), modificato.ToString());
-        }
-
         private void Modifica(string parola, string oggetto)
         {
 
@@ -157,4 +158,4 @@ namespace Mariani_File
         }
     }
 }
-
+#endregion 

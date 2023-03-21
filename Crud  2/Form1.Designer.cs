@@ -1,4 +1,4 @@
-﻿namespace Mariani_File
+﻿namespace Crud__2
 {
     partial class Form1
     {
