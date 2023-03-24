@@ -16,15 +16,14 @@ namespace Crud__2
     public partial class Form1 : Form
     {
         #region Dichiarazioni variabili
-        public struct Prodotto
+        public struct Prodotto //dichiarazione del prodotto
         {
-            public string nome;
-            public float prezzo;
-            //public int qnt;
+            public string nome; //dichiarazione della stringa
+            public float prezzo;//prezzo del prodotto
         }
-        public string fileName = @"testo.csv";
-        public Prodotto prodotto;
-        public int dim;
+        public string fileName = @"testo.csv"; //filename
+        public Prodotto prodotto; //prodotto
+        public int dim; //dimensione
         #endregion
 
         #region Pulsanti
@@ -37,125 +36,126 @@ namespace Crud__2
         {
 
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e) //funzioni del primo pulsante
         {
             prodotto.nome = textBox1.Text;
-            prodotto.prezzo = float.Parse(textBox2.Text);
-            Scrittura(prodotto);
-            textBox1.Clear();
-            textBox2.Clear();
+            prodotto.prezzo = float.Parse(textBox2.Text); //conversione del prodotto.prezzo in un float
+            Scrittura(prodotto); //richiamo della funzione scrittura
+            textBox1.Clear();//pulire la tetxbox 
+            textBox2.Clear();//pulire la tetxbox 
             textBox1.Focus();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e) //funzioni secondo pulsante
         {
-            listView1.Clear();
-            AperturaFile();
+            listView1.Clear(); //pulire la listview
+            AperturaFile(); // richiamo della funzione di apertura del file
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e) //funzioni terzo pulsante
         {
-            listView1.Clear();
+            listView1.Clear();//pulire la listview
 
-            using (StreamWriter writer = new StreamWriter(fileName, append: false))
+            using (StreamWriter writer = new StreamWriter(fileName, append: false))//creazione del file
             {
-                writer.Close();
+                writer.Close();//chiusura del file
             }
         }
-        private void button4_Click(object sender, EventArgs e)
+        private void button4_Click(object sender, EventArgs e) //funzioni quarto pulsante
         {
-            string oggetto = textBox1.Text;
-            Cancellazione(oggetto);
+            string oggetto = textBox1.Text;//dichiarazione della stringa oggeto uguale alla textbox
+            Cancellazione(oggetto);//richiamo della funzione di cancellazione
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)//funzioni quinto pulsante
         {
-            string parola = textBox1.Text;
-            string modificato = textBox3.Text;
+            string parola = textBox1.Text;//dichiarazione della stringa parola uguale alla textbox
+            string modificato = textBox3.Text;//dichiarazione della stringa modificato uguale alla textbox
 
-            Modifica(parola.ToString(), modificato.ToString());
+            Modifica(parola.ToString(), modificato.ToString());//richiamo della funzione di modifica
         }
         #endregion
 
         #region funzioni 
-        private void Scrittura(Prodotto prodotto)
+        private void Scrittura(Prodotto prodotto) //funzione di scrittura
         {
-            using (StreamWriter writer = new StreamWriter(fileName, append: true))
+            using (StreamWriter writer = new StreamWriter(fileName, append: true))// modifica del file
             {
-                writer.WriteLine("Nome: " + prodotto.nome + ";" + " Prezzo: " + prodotto.prezzo + "€");
-                writer.Close();
+                writer.WriteLine("Nome: " + prodotto.nome + ";" + " Prezzo: " + prodotto.prezzo + "€"); //scrittura del nome del prodotto e del prezzo
+                writer.Close();//chiusura del file
             }
 
         }
 
-        private void Cancellazione(string oggetto)
+        private void Cancellazione(string oggetto)//funzione di cancellazione
         {
 
-            using (StreamReader reader = File.OpenText(fileName))
+            using (StreamReader reader = File.OpenText(fileName))//lettura del file
             {
-                string s = "";
-                while ((s = reader.ReadLine()) != null)
+                string s = ""; //dichiarazione della stinga s
+                while ((s = reader.ReadLine()) != null)//ciclo while
                 {
-                    string[] splittaggio1 = s.Split(';');
-                    string[] splittaggio2 = splittaggio1[0].Split(' ');
-                    using (StreamWriter writer = new StreamWriter(@"appoggio.csv", append: true))
+                    string[] split1 = s.Split(';');//dichiarazione dell'array di stringhe
+                    string[] split2 = split1[0].Split(' ');//dichiarazione dell'array di stringhe
+                    using (StreamWriter writer = new StreamWriter(@"appoggio.csv", append: true))// modifica del file
                     {
-                        if (oggetto != splittaggio2[1])
+                        if (oggetto != split2[1]) //condizione
                         {
-                            writer.WriteLine(s);
+                            writer.WriteLine(s);//stampa della stringa s
                         }
-                        writer.Close();
+                        writer.Close();//chiusura del file
                     }
                 }
-                reader.Close();
+                reader.Close();//chiusura del file
             }
-            File.Delete(@"testo.csv");
-            File.Move(@"appoggio.csv", @"testo.csv");
-            listView1.Clear();
-            AperturaFile();
+            File.Delete(@"testo.csv");//cancellazione del file di testo 
+            File.Move(@"appoggio.csv", @"testo.csv");//spostamento dei file
+            listView1.Clear();//pulire la listview
+            AperturaFile();//richiamo alla funzione di apertura del file
         }
-        private void AperturaFile()
+        private void AperturaFile()//funzione di apertura del file
         {
-            using (StreamReader sr = File.OpenText(fileName))
+            using (StreamReader sr = File.OpenText(fileName))//lettura del file
             {
-                string s = "";
-                while ((s = sr.ReadLine()) != null)
+                string s = "";//dichiarazione della stringa s
+                while ((s = sr.ReadLine()) != null)//ciclo while
                 {
-                    listView1.Items.Add(s);
+                    listView1.Items.Add(s);//aggiunta di elementi alla listview
                 }
-                sr.Close();
+                sr.Close();//chiusura dello streamreader
             }
         }
-        private void Modifica(string parola, string oggetto)
+        private void Modifica(string parola, string oggetto)//funzione di modifica
         {
 
-            using (StreamReader reader = File.OpenText(fileName))
+            using (StreamReader reader = File.OpenText(fileName))//letturaq del file
             {
-                string s = "";
-                while ((s = reader.ReadLine()) != null)
+                string s = "";//dichiarazione della stinga s
+                while ((s = reader.ReadLine()) != null)//ciclo while
                 {
-                    string[] splittaggio1 = s.Split(';');
-                    string[] splittaggio2 = splittaggio1[0].Split(' ');
-                    using (StreamWriter writer = new StreamWriter(@"appoggio.csv", append: true))
+                    string[] split1 = s.Split(';');//dichiarazione dell'array di stringhe
+                    string[] split2 = split1[0].Split(' ');//dichiarazione dell'array di stringhe
+                    using (StreamWriter writer = new StreamWriter(@"appoggio.csv", append: true))// modifica del file
                     {
-                        if (parola == splittaggio2[1])
+                        if (parola == split2[1])//condizione if
                         {
-                            writer.WriteLine(splittaggio2[0] + " " + oggetto + ";" + splittaggio1[1]);
+                            writer.WriteLine(split2[0] + " " + oggetto + ";" + split1[1]);//stampa 
                         }
                         else
                         {
-                            writer.WriteLine(s);
+                            writer.WriteLine(s);//stampa
                         }
-                        writer.Close();
+                        writer.Close();//chiusura dello streamwriter
                     }
                 }
-                reader.Close();
+                reader.Close();//chiusura dello streamreader
             }
-            File.Delete(@"testo.csv");
-            File.Move(@"appoggio.csv", @"testo.csv");
-            listView1.Clear();
-            AperturaFile();
+            File.Delete(@"testo.csv");//cancellazione del file
+            File.Move(@"appoggio.csv", @"testo.csv");//spostamento del file
+            listView1.Clear();//pulire la listview
+            AperturaFile();//richiamo alla funzione di apertura del file
         }
+        #endregion 
     }
 }
-#endregion 
+
